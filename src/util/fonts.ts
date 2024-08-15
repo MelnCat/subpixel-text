@@ -1,22 +1,25 @@
+import { thinGlyphs } from "./thinGlyphs";
+
 interface Glyph {
 	width: number;
-	height: number;
 	data: number[];
 }
 interface SubpixelFont {
-	gap: number;
 	glyphs: Record<string, Glyph>;
 	upper: boolean;
+	height: number;
 }
 
 const thinGlyph = (data: number[]): Glyph => ({
-	width: 1, height: 5, data
+	width: 1, data
 });
 
 const thinFont: SubpixelFont = {
-	gap: 1,
 	upper: true,
-	glyphs: {
-		A: 
-	}
+	height: 5,
+	glyphs: Object.fromEntries(Object.entries(thinGlyphs).map(x => [x[0], thinGlyph(x[1])]))
+}
+
+export const fonts = {
+	thin: thinFont
 }
