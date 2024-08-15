@@ -254,7 +254,13 @@ export const thinGlyphs = {
 		#  
 		###
 	`),
-	" ": { width: 1, data: [] },
+	" ": makeGlyph(`
+		   
+		   
+		   
+		   
+		   
+	`),
 	// custom ones
 	".": makeGlyph(`
 		   
@@ -465,5 +471,12 @@ export const thinGlyphs = {
 		  ##  
 		##  ##
 		      
+	`),
+	"%": makeGlyph(`
+		 
+		 
+		 
+		 
+		 
 	`),
 }

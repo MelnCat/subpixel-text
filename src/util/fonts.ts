@@ -1,3 +1,4 @@
+import { Glyph } from "./glyph";
 import { thinGlyphs } from "./thinGlyphs";
 
 interface SubpixelFont {
