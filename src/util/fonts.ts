@@ -11,13 +11,13 @@ interface SubpixelFont {
 }
 
 const thinGlyph = (data: number[]): Glyph => ({
-	width: 1, data
+	width: 3, data
 });
 
 const thinFont: SubpixelFont = {
 	upper: true,
 	height: 5,
-	glyphs: Object.fromEntries(Object.entries(thinGlyphs).map(x => [x[0], thinGlyph(x[1])]))
+	glyphs: thinGlyphs
 }
 
 export const fonts = {

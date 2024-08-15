@@ -6,4 +6,10 @@
 main {
 	display: flex;
 	flex-direction: column;
+	gap: 1em;
+}
+canvas {
+	width: fit-content;
+	background-color: black;
+	margin: 0 auto;
 }
