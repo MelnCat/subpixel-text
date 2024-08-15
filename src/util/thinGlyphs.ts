@@ -291,7 +291,7 @@ export const thinGlyphs = {
 		   
 		 # 
 	`),
-	":": makeGlyph(`
+	";": makeGlyph(`
 		 # 
 		   
 		   
