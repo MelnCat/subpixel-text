@@ -361,4 +361,109 @@ export const thinGlyphs = {
 		 # 
 		## 
 	`),
+	"=": makeGlyph(`
+		   
+		###
+		   
+		###
+		   
+	`),
+	"+": makeGlyph(`
+		   
+		 # 
+		###
+		 # 
+		   
+	`),
+	"-": makeGlyph(`
+		   
+		   
+		###
+		   
+		   
+	`),
+	"<": makeGlyph(`
+		  #
+		 # 
+		#  
+		 # 
+		  #
+	`),
+	">": makeGlyph(`
+		#  
+		 # 
+		  #
+		 # 
+		#  
+	`),
+	"*": makeGlyph(`
+		   
+		# #
+		 # 
+		# #
+		   
+	`),
+	"|": makeGlyph(`
+		 # 
+		 # 
+		 # 
+		 # 
+		 # 
+	`),
+	"&": makeGlyph(`
+		 # 
+		###
+		#  
+		###
+		 # 
+	`),
+	"^": makeGlyph(`
+		 # 
+		# #
+		   
+		   
+		   
+	`),
+	"{": makeGlyph(`
+		 ##
+		 # 
+		#  
+		 # 
+		 ##
+	`),
+	"}": makeGlyph(`
+		## 
+		 # 
+		  # 
+		 # 
+		## 
+	`),
+	"`": makeGlyph(`
+		#  
+		 # 
+		   
+		   
+		   
+	`),
+	"_": makeGlyph(`
+		   
+		   
+		   
+		   
+		###
+	`),
+	"$": makeGlyph(`
+		   #  
+		 #### 
+		 #####
+		  ####
+		   #  
+	`),
+	"~": makeGlyph(`
+		      
+		      
+		  ##  
+		##  ##
+		      
+	`),
 }
