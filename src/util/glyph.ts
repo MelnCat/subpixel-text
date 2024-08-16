@@ -1,18 +1,24 @@
 import * as R from "remeda";
 
 export class Glyph {
-	readonly width = Math.max(...this.data.map(x => x.length));
-	readonly height = this.data.length;
 	constructor(public readonly data: boolean[][]) {}
+	get width() {
+		return Math.max(...this.data.map(x => x.length));
+	}
+	get height() {
+		return this.data.length;
+	}
 
 	get isolated() {
 		return new Glyph(this.data.map(x => x.concat(Array(Math.ceil(this.width / 3) * 3 - x.length).fill(false))));
 	}
 }
 export class GlyphRow {
-	readonly height = this.glyphs[0]?.data.length ?? 0;
 	constructor(public readonly glyphs: Glyph[], public readonly gap: number, public readonly offset: number) {
 		if (!this.glyphs.every(x => x.data.length === this.glyphs[0]?.data.length)) throw new Error(`Heights incorrect`);
+	}
+	get height() {
+		return this.glyphs[0]?.data.length ?? 0;
 	}
 
 	processRows(avoidBlue: boolean) {
@@ -34,7 +40,7 @@ export class GlyphRow {
 	draw(invert: boolean, avoidBlue: boolean, setPixel: (x: number, y: number, color: number) => void) {
 		if (this.glyphs.length === 0) return;
 		const mergedRows = this.processRows(avoidBlue);
-		
+
 		const pixelRows = mergedRows.map(x => R.chunk(x, 3).map(([r, g, b]) => ((invert ? b : r) ? 0xf80000 : 0) + (g ? 0x00ff00 : 0) + ((invert ? r : b) ? 0xf6 : 0)));
 		for (const [i, row] of pixelRows.entries()) {
 			for (const [j, pixel] of row.entries()) {
