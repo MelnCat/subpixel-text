@@ -10,19 +10,32 @@ export class Glyph {
 	}
 }
 export class GlyphRow {
-	public readonly width = this.glyphs.reduce((l, c) => l + c.width, 0) + this.gap * (this.glyphs.length - 1) + this.offset;
 	readonly height = this.glyphs[0]?.data.length ?? 0;
 	constructor(public readonly glyphs: Glyph[], public readonly gap: number, public readonly offset: number) {
 		if (!this.glyphs.every(x => x.data.length === this.glyphs[0]?.data.length)) throw new Error(`Heights incorrect`);
 	}
 
-	draw(setPixel: (x: number, y: number, color: number) => void) {
-		if (this.glyphs.length === 0) return;
+	processRows(avoidBlue: boolean) {
+		if (this.glyphs.length === 0) return [];
 		const mergedRows = this.glyphs
 			.map(x => x.data)
 			.reduce((l, c) => l.map((x, i) => x.concat(Array(this.gap).fill(false)).concat(c[i])))
 			.map(x => Array(this.offset).fill(false).concat(x));
-		const pixelRows = mergedRows.map(x => R.chunk(x, 3).map(([r, g, b]) => (r ? 0xf80000 : 0) + (g ? 0x00ff00 : 0) + (b ? 0xf6 : 0)));
+		if (avoidBlue) {
+			let lastBlue = 0;
+			while (mergedRows.some(x => x.some((y, i) => i > lastBlue && i % 3 === 2 && y))) {
+				const blueColumn = mergedRows.find(x => x.some((y, i) => i > lastBlue && i % 3 === 2 && y))!.findIndex((y, i) => i > lastBlue && i % 3 === 2 && y);
+				for (const row of mergedRows) row.splice(blueColumn, 0, row[blueColumn]);
+				lastBlue = blueColumn + 1;
+			}
+		}
+		return mergedRows;
+	}
+	draw(invert: boolean, avoidBlue: boolean, setPixel: (x: number, y: number, color: number) => void) {
+		if (this.glyphs.length === 0) return;
+		const mergedRows = this.processRows(avoidBlue);
+		
+		const pixelRows = mergedRows.map(x => R.chunk(x, 3).map(([r, g, b]) => ((invert ? b : r) ? 0xf80000 : 0) + (g ? 0x00ff00 : 0) + ((invert ? r : b) ? 0xf6 : 0)));
 		for (const [i, row] of pixelRows.entries()) {
 			for (const [j, pixel] of row.entries()) {
 				setPixel(j, i, pixel);

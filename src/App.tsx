@@ -12,6 +12,8 @@ function App() {
 	const [yGap, setYGap] = useState(1);
 	const [offset, setOffset] = useState(0);
 	const [canvasSrc, setCanvasSrc] = useState("");
+	const [invert, setInvert] = useState(false);
+	const [avoidBlue, setAvoidBlue] = useState(false);
 	const fontData = useMemo(() => fonts[font as keyof typeof fonts], [font]);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -25,6 +27,7 @@ function App() {
 		if (!text.trim()) {
 			ctx.canvas.width = 1;
 			ctx.canvas.height = 1;
+			setCanvasSrc("");
 			return;
 		}
 		const lines = text.split(/\n/);
@@ -42,7 +45,7 @@ function App() {
 					offset
 				)
 		);
-		const widthSubpixel = 2 * 3 * padding + Math.max(...glyphRows.map(x => x.width)) + offset; // Remove offset here for non-centered
+		const widthSubpixel = 2 * 3 * padding + Math.max(...glyphRows.map(x => Math.max(...x.processRows(avoidBlue).map(x => x.length)))) + offset; // Remove offset here for non-centered
 		const width = Math.ceil(widthSubpixel / 3);
 		const height = glyphRows.reduce((l, c) => l + c.height, 0) + yGap * (glyphRows.length - 1) + 2 * padding;
 		ctx.fillRect(0, 0, width, height);
@@ -56,14 +59,15 @@ function App() {
 		let top = padding;
 		for (const [i, line] of glyphRows.entries()) {
 			const left = padding;
-			line.draw((x, y, c) => setPixelColor(image, x + left, y + top, c));
+			line.draw(invert, avoidBlue, (x, y, c) => setPixelColor(image, x + left, y + top, c));
 			top += line.height + yGap;
 		}
 		ctx.putImageData(image, 0, 0);
 		setCanvasSrc(canvasRef.current?.toDataURL("image/png") ?? "");
-	}, [text, fontData, xGap, yGap, padding, offset]);
+	}, [text, fontData, xGap, yGap, padding, offset, invert, avoidBlue]);
 	return (
 		<main>
+			<h1>Subpixel Text Generator</h1>
 			<section className="input-panel">
 				<textarea value={text} onChange={e => setText(e.target.value)} />
 				<section className="settings">
@@ -78,6 +82,12 @@ function App() {
 					</div>
 					<div>
 						Padding <input type="number" value={padding} onChange={e => setPadding(+e.target.value)} />
+					</div>
+					<div>
+						Invert <input type="checkbox" checked={invert} onChange={e => setInvert(!invert)} />
+					</div>
+					<div>
+						Avoid Blue <input type="checkbox" checked={avoidBlue} onChange={e => setAvoidBlue(!avoidBlue)} />
 					</div>
 					<div>
 						Font{" "}
