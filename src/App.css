@@ -13,3 +13,17 @@ canvas {
 	background-color: black;
 	margin: 0 auto;
 }
+.large-preview {
+	height: 2em;
+}
+.large-preview img {
+	height: 100%;
+}
+.input-panel {
+	display: flex;
+	flex-direction: column;
+}
+.settings {
+	display: flex;
+	flex-direction: column;
+}

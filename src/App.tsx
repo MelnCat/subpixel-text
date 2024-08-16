@@ -8,7 +8,10 @@ function App() {
 	const [text, setText] = useState("");
 	const [font, setFont] = useState("thin");
 	const [padding, setPadding] = useState(1);
-	const [gap, setGap] = useState(3);
+	const [xGap, setXGap] = useState(3);
+	const [yGap, setYGap] = useState(1);
+	const [offset, setOffset] = useState(0);
+	const [canvasSrc, setCanvasSrc] = useState("");
 	const fontData = useMemo(() => fonts[font as keyof typeof fonts], [font]);
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -35,11 +38,13 @@ function App() {
 			x =>
 				new GlyphRow(
 					x.map(y => fontData.glyphs[y]),
-					gap
+					xGap,
+					offset
 				)
 		);
-		const width = 2 * padding + Math.ceil(Math.max(...glyphRows.map(x => x.width)));
-		const height = glyphRows.reduce((l, c) => l + c.height, 0) + Math.ceil(gap / 3) * (glyphRows.length - 1) + 2 * padding;
+		const widthSubpixel = 2 * 3 * padding + Math.max(...glyphRows.map(x => x.width)) + offset; // Remove offset here for non-centered
+		const width = Math.ceil(widthSubpixel / 3);
+		const height = glyphRows.reduce((l, c) => l + c.height, 0) + yGap * (glyphRows.length - 1) + 2 * padding;
 		ctx.fillRect(0, 0, width, height);
 		ctx.canvas.width = width;
 		ctx.canvas.height = height;
@@ -52,14 +57,43 @@ function App() {
 		for (const [i, line] of glyphRows.entries()) {
 			const left = padding;
 			line.draw((x, y, c) => setPixelColor(image, x + left, y + top, c));
-			top += line.height + Math.ceil(gap / 3);
+			top += line.height + yGap;
 		}
 		ctx.putImageData(image, 0, 0);
-	}, [text, fontData, gap, padding]);
+		setCanvasSrc(canvasRef.current?.toDataURL("image/png") ?? "");
+	}, [text, fontData, xGap, yGap, padding, offset]);
 	return (
 		<main>
-			<textarea value={text} onChange={e => setText(e.target.value)} />
-			<canvas ref={canvasRef} />
+			<section className="input-panel">
+				<textarea value={text} onChange={e => setText(e.target.value)} />
+				<section className="settings">
+					<div>
+						Offset <input type="number" value={offset} onChange={e => setOffset(+e.target.value)} />
+					</div>
+					<div>
+						X Gap <input type="number" value={xGap} onChange={e => setXGap(+e.target.value)} />
+					</div>
+					<div>
+						Y Gap <input type="number" value={yGap} onChange={e => setYGap(+e.target.value)} />
+					</div>
+					<div>
+						Padding <input type="number" value={padding} onChange={e => setPadding(+e.target.value)} />
+					</div>
+					<div>
+						Font{" "}
+						<select onChange={e => setFont(e.target.value)} value={font}>
+							<option value="thin">Thin</option>
+							<option value="medium">Medium</option>
+						</select>
+					</div>
+				</section>
+			</section>
+			<section className="output">
+				<canvas ref={canvasRef} />
+				<section className="large-preview">
+					<img alt="" src={canvasSrc} />
+				</section>
+			</section>
 		</main>
 	);
 }

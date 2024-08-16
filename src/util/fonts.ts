@@ -1,4 +1,5 @@
 import { Glyph } from "./glyph";
+import { mediumGlyphs } from "./mediumGlyphs";
 import { thinGlyphs } from "./thinGlyphs";
 
 interface SubpixelFont {
@@ -13,6 +14,13 @@ const thinFont: SubpixelFont = {
 	glyphs: thinGlyphs
 }
 
+const mediumFont: SubpixelFont = {
+	upper: true,
+	height: 5,
+	glyphs: mediumGlyphs
+}
+
 export const fonts = {
-	thin: thinFont
+	thin: thinFont,
+	medium: mediumFont
 }

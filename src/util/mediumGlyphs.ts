@@ -253,4 +253,11 @@ export const mediumGlyphs = {
 		 #    
 		##### 
 	`),
+	" ": makeGlyph(`
+		      
+		      
+		      
+		      
+		      
+	`),
 };
