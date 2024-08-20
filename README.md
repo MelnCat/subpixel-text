@@ -1,50 +1,21 @@
-# React + TypeScript + Vite
+# Subpixel Text Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Generate images that appear like vertical bars at first glance, but actually contain viewable text through subpixels!
 
-Currently, two official plugins are available:
+Deployed at https://subpixel-text.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Uses concepts from https://www.msarnoff.org/millitext/.
 
-## Expanding the ESLint configuration
+Sample generated images:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+![download (1)](https://github.com/user-attachments/assets/d3a9a8b3-a284-4f49-bc8b-b8681099e140)
 
-- Configure the top-level `parserOptions` property like this:
+![download (2)](https://github.com/user-attachments/assets/d32d2107-eb89-41e4-ad57-aeaa6ef23846)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+As seen on a monitor:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+![DiscordCanary_JxxNZiGsK0](https://github.com/user-attachments/assets/1fad9f3a-c9e3-45b1-856d-4ed17c6908ec)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+# Setup
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Run `yarn` to install packages, then `yarn dev` to start the development environment. Run `yarn build` to build a production build.
